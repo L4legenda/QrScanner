@@ -6,6 +6,10 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 
+userlist = []
+
+isChek = []
+
 while True:
 
     success, img = cap.read()
@@ -19,9 +23,22 @@ while True:
         pts = pts.reshape((-1, 1, 2))
         cv2.polylines(img, [pts], True, (255, 0, 255), 5)
         pts2 = barcode.rect
-        cv2.putText(img, myData, (pts2[0], pts2[1]), cv2.FONT_HERSHEY_COMPLEX,
-                    0.9, (255, 0, 255), 2
-                    )
+
+        color = (145, 16, 9)
+        if myData in userlist:
+            color = (6, 201, 35)
+        else:
+            userlist.append(myData)
+            color = (6, 201, 35)
+
+
+        cv2.putText(
+            img,
+            myData,
+            (pts2[0], pts2[1]),
+            cv2.FONT_HERSHEY_COMPLEX,
+            0.9, (255, 0, 255), 2
+        )
 
     cv2.imshow("Result", img)
     cv2.waitKey(1)
